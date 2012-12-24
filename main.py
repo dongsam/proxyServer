@@ -154,7 +154,7 @@ class ProxyRequest(http.Request):
     def processResponse(self, data):
 	#if sys.argv[2] in data:
 	#	data.replace(sys.argv[2],sys.argv[3])
-	#return data
+	   return data
 
 class TransparentProxy(http.HTTPChannel):
     requestFactory = ProxyRequest
